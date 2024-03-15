@@ -22,19 +22,30 @@ namespace _02.EFCoreComputerService.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceRecordStaff", b =>
+            modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Assignment", b =>
                 {
-                    b.Property<int>("ServiceRecordsId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("StaffsId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AssignmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ServiceRecordId")
                         .HasColumnType("int");
 
-                    b.HasKey("ServiceRecordsId", "StaffsId");
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("StaffsId");
+                    b.HasKey("Id");
 
-                    b.ToTable("ServiceRecordStaff");
+                    b.HasIndex("ServiceRecordId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Customer", b =>
@@ -231,19 +242,23 @@ namespace _02.EFCoreComputerService.Migrations
                     b.ToTable("Staffs");
                 });
 
-            modelBuilder.Entity("ServiceRecordStaff", b =>
+            modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Assignment", b =>
                 {
-                    b.HasOne("_02.EFCoreComputerService.Models.ORM.ServiceRecord", null)
+                    b.HasOne("_02.EFCoreComputerService.Models.ORM.ServiceRecord", "ServiceRecord")
                         .WithMany()
-                        .HasForeignKey("ServiceRecordsId")
+                        .HasForeignKey("ServiceRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_02.EFCoreComputerService.Models.ORM.Staff", null)
+                    b.HasOne("_02.EFCoreComputerService.Models.ORM.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffsId")
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ServiceRecord");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Invoice", b =>

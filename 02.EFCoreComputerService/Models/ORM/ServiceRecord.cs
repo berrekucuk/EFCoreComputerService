@@ -24,6 +24,5 @@ namespace _02.EFCoreComputerService.Models.ORM
 
         [ForeignKey("ServiceStatusId")]
         public ServiceStatus ServiceSatatus { get; set; }
-        public List<Staff> Staffs { get; set; }
     }
 }

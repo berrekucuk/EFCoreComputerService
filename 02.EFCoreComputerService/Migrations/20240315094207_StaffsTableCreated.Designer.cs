@@ -12,7 +12,7 @@ using _02.EFCoreComputerService.Models.ORM;
 namespace _02.EFCoreComputerService.Migrations
 {
     [DbContext(typeof(ComputerServiceContext))]
-    [Migration("20240313210914_StaffsTableCreated")]
+    [Migration("20240315094207_StaffsTableCreated")]
     partial class StaffsTableCreated
     {
         /// <inheritdoc />
@@ -24,6 +24,32 @@ namespace _02.EFCoreComputerService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AssignmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ServiceRecordId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceRecordId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("Assignments");
+                });
 
             modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Customer", b =>
                 {
@@ -123,16 +149,11 @@ namespace _02.EFCoreComputerService.Migrations
                     b.Property<int>("ServiceStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StaffId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("ServiceStatusId");
-
-                    b.HasIndex("StaffId");
 
                     b.ToTable("ServiceRecords");
                 });
@@ -224,6 +245,25 @@ namespace _02.EFCoreComputerService.Migrations
                     b.ToTable("Staffs");
                 });
 
+            modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Assignment", b =>
+                {
+                    b.HasOne("_02.EFCoreComputerService.Models.ORM.ServiceRecord", "ServiceRecord")
+                        .WithMany()
+                        .HasForeignKey("ServiceRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_02.EFCoreComputerService.Models.ORM.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceRecord");
+
+                    b.Navigation("Staff");
+                });
+
             modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Invoice", b =>
                 {
                     b.HasOne("_02.EFCoreComputerService.Models.ORM.ServiceRecord", "ServiceRecord")
@@ -249,18 +289,9 @@ namespace _02.EFCoreComputerService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("_02.EFCoreComputerService.Models.ORM.Staff", null)
-                        .WithMany("ServiceRecords")
-                        .HasForeignKey("StaffId");
-
                     b.Navigation("Customer");
 
                     b.Navigation("ServiceSatatus");
-                });
-
-            modelBuilder.Entity("_02.EFCoreComputerService.Models.ORM.Staff", b =>
-                {
-                    b.Navigation("ServiceRecords");
                 });
 #pragma warning restore 612, 618
         }

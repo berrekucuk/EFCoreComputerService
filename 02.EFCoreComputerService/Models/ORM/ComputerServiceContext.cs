@@ -19,6 +19,7 @@ namespace _02.EFCoreComputerService.Models.ORM
         public DbSet<ServiceRecord> ServiceRecords { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Staff> Staffs { get; set;}
+        public DbSet<Assignment> Assignments { get; set; }
 
     }
 }

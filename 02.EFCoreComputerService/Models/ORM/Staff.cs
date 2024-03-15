@@ -14,6 +14,5 @@ namespace _02.EFCoreComputerService.Models.ORM
         public string Phone { get; set; }
         public string? Email { get; set; }
         public DateTime StartingDate { get; set; }
-        public List<ServiceRecord> ServiceRecords { get; set; }
     }
 }
